@@ -1,0 +1,17 @@
+﻿@page
+<!-- Matches the class name in the .cs file 
+     Has everything from the class called IndexModel 
+     We put static files in the wwwroot folder.
+     We get bootstrap and jquery-->
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<!-- View file 
+     There is a header and foot from the Pages > Shared > _Layout.cshtml 
+     This is specified in the _ViewStart.cshtml. -->
+<div class="text-center">
+    <h1 class="display-4 bg-danger">Welcome</h1>
+    <p class="bg-success">Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>

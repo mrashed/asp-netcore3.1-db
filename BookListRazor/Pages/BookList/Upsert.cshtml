@@ -1,0 +1,92 @@
+﻿@page
+@model BookListRazor.UpsertModel
+
+
+@* Check the model and see if there is an id.  No ID equals create. *@
+<h2 class="text-info my-4">@(Model.UpsertBook.Id != 0 ? "Edit" : "Create") Book</h2>
+
+<div id="container" class="border container p-5">
+
+    <form method="post">
+
+        @* Add an error message if input does not match the model
+        Controller level validation *@
+        <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+
+        @* Need the hidden ID for Edit and remove or the model that is passed to the onput
+        will be missing the ID and we can not lookup the record.
+        No ID equals new book and id equals edit book. *@
+        @if (Model.UpsertBook.Id != 0 )
+        {
+            <input type="hidden" asp-for="UpsertBook.Id" />
+        } 
+
+
+        @* One row for each one, two, or three label entry pairs*@
+        <div class="form-group row">
+
+            @* Label entry pair *@
+            <div class="col-2">
+                <label asp-for="UpsertBook.Name"></label>
+            </div>
+            <div class="col-6">
+                <input asp-for="UpsertBook.Name" class="form-control" />
+            </div>
+
+            @* Post the error next to the field if it does not meet the model's requirements. *@
+            <span asp-validation-for="UpsertBook.Name" class="text-danger"></span>
+
+        </div>
+
+        @* One row for each one, two, or three label entry pairs*@
+        <div class="form-group row">
+
+            @* Label entry pair *@
+            <div class="col-2">
+                <label asp-for="UpsertBook.Author"></label>
+            </div>
+            <div class="col-6">
+                <input asp-for="UpsertBook.Author" class="form-control" />
+            </div>
+
+            @* Post the error next to the field if it does not meet the model's requirements. *@
+            <span asp-validation-for="UpsertBook.Author" class="text-danger"></span>
+
+        </div>
+
+        @* One row for each one, two, or three label entry pairs*@
+        <div class="form-group row">
+
+            @* Label entry pair *@
+            <div class="col-2">
+                <label asp-for="UpsertBook.ISBN"></label>
+            </div>
+            <div class="col-6">
+                <input asp-for="UpsertBook.ISBN" class="form-control" />
+            </div>
+
+            @* Post the error next to the field if it does not meet the model's requirements. *@
+            <span asp-validation-for="UpsertBook.ISBN" class="text-danger"></span>
+
+        </div>
+
+        @* Submit button on a new row and in a new group for visual seperation *@
+        <div class="form-group row">
+
+            <div class="col-2 offset-2">
+                <button type="submit" class="btn btn-primary form-control">@(Model.UpsertBook.Id != 0 ? "Update" : "Create")</button>
+            </div>
+            <div class="col-2">
+                @* Go back to the index using a link that looks like a button *@
+                <a asp-page="Index" class="btn btn-success form-control">Back to List</a>
+            </div>
+        </div>
+
+    </form>
+
+</div>
+
+@* Front end validation *@
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,144 @@
+﻿@page
+@model BookListRazor.IndexModel
+
+<br />
+
+@*All the public properties from the BookList Index.cshtml.cs are availabe for use in this view
+    I like these comment because like JSP comments they are removed from the users view.
+    We are getting bootstrap for free because of core. *@
+<div class="container row p-0 m-0">
+    <div class="col-7">
+        <h2 class="text-info">Book List</h2>
+    </div>
+
+    <div class="col-2">
+        <a asp-page="Create" class="btn btn-info form-control text-white">Create New Book</a>
+    </div>
+    <div class="col-3">
+        <a asp-page="Upsert" class="btn btn-secondary form-control text-white">(Add) Upsert New Book</a>
+    </div>
+
+    @* Next section will load a list of books.  We will add buttons to remove and edit a given book. *@
+    <section class="col-12 border p-3 mt-3">
+        <form method="post">
+            @* If we preceed a statement with at sign we can use C#
+                Here we are also using the Model and the public property for the first time. *@
+            @if (Model.Books.Count() > 0)
+            {
+                <table class="table table-striped border">
+                    @* This is the table header *@
+                    <tr class="table-secondary">
+                        <th>
+                            @* Label type, get the first book and grap the name of the column. *@
+                            <label asp-for="Books.FirstOrDefault().Name"></label>
+                        </th>
+                        <th>
+                            @* This is the old way and below is the new, beter way. *@
+                            @* @Html.DisplayNameFor(m=>m.Books.FirstOrDefault().Author) *@
+                            <label asp-for="Books.FirstOrDefault().Author"></label>
+                        </th>
+                        <th>
+                            <label asp-for="Books.FirstOrDefault().ISBN"></label>
+                        </th>
+                        <th>
+
+                        </th>
+                    </tr>
+
+                    @* Now we will use some C# code to loop over the IEnumberable property. *@
+                    @foreach (var item in Model.Books)
+                    {
+                        @* Build each table row using item. *@
+                        <tr>
+                            <td>
+                                @* For some weird reason there is no tag helper for DisplayFor so we must use HTML helper, come on Microsoft! *@
+                                @Html.DisplayFor(m => item.Name)
+                            </td>
+                            <td>
+                                @* For some weird reason there is no tag helper for DisplayFor so we must use HTML helper, come on Microsoft! *@
+                                @Html.DisplayFor(m => item.Author)
+                            </td>
+                            <td>
+                                @* For some weird reason there is no tag helper for DisplayFor so we must use HTML helper, come on Microsoft! *@
+                                @Html.DisplayFor(m => item.ISBN)
+                            </td>
+                            <td>
+                                @* Now we can add buttons at the end of the row.
+                                    Delete is a button because it will run code and Edit is a link to open a new window to edit.
+                                    Want to run code on the same index page.  We use a custom handler (not onget or onpost).
+                                    asp-route-id adds a route to the URL. *@
+                                <button asp-page-handler="Delete" asp-route-id="@item.Id"
+                                        onclick="return confirm('Are you sure you want to delete?')"
+                                        class="btn btn-danger btn-sm">
+                                    Delete
+                                </button>
+
+                                @* Passing the ID of the line back to the controller
+                                    We are in loop with item variable.  We us amp symbole to use C# with 
+                                    the object name and getter.  Should be url/Edit?id={some id number} *@
+                                <a asp-page="Edit" asp-route-id="@item.Id" class="btn btn-success btn-sm text-white">Edit</a>
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            }
+            else
+            {
+                <p>No books have been added yet.</p>
+            }
+        </form>
+    </section>
+
+
+    @*Using data table view.  I'll use this for the ISWITRS Management Page.
+        <div class="col-12 text-center">
+            <span class="h3 text-info mt-5 mb-5">OR</span>
+        </div>
+
+
+        <section class="col-12 border p-3">
+
+            <table id="DT_load" class="table table-striped table-bordered" style="width:100%">
+
+                <thead>
+
+                    <tr>
+                        <th>Name</th>
+                        <th>Author</th>
+                        <th>ISBN</th>
+                        <th></th>
+                    </tr>
+
+                </thead>
+
+            </table>
+
+        </section>*@
+
+    <div class="col-12" style="text-align:center">
+        <br />
+        <span class="h3 text-info">OR</span>
+        <br /><br />
+    </div>
+    <div class="col-12 border p-3">
+
+        <table id="DT_load" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th> Author</th>
+                    <th> ISBN</th>
+                    <th></th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+</div>
+
+@* How we add scripts into a page Loading the table using JS. *@
+@section Scripts{
+    <script src="~/js/bookList.js"></script>
+}
+
